@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="48" fill="#1a3a1a" stroke="#2ea043" stroke-width="2"/>
+  <!-- Head -->
+  <ellipse cx="50" cy="48" rx="20" ry="22" fill="#8a9a5b"/>
+  <!-- Ears -->
+  <ellipse cx="18" cy="42" rx="16" ry="6" fill="#8a9a5b" transform="rotate(-15 18 42)"/>
+  <ellipse cx="82" cy="42" rx="16" ry="6" fill="#8a9a5b" transform="rotate(15 82 42)"/>
+  <!-- Eyes -->
+  <ellipse cx="42" cy="44" rx="5" ry="4" fill="#fff"/>
+  <ellipse cx="58" cy="44" rx="5" ry="4" fill="#fff"/>
+  <circle cx="43" cy="44" r="2.5" fill="#2d4a1a"/>
+  <circle cx="59" cy="44" r="2.5" fill="#2d4a1a"/>
+  <!-- Eyebrows -->
+  <path d="M36 38 Q42 34 48 38" stroke="#6b7a4a" stroke-width="1.5" fill="none"/>
+  <path d="M52 38 Q58 34 64 38" stroke="#6b7a4a" stroke-width="1.5" fill="none"/>
+  <!-- Mouth -->
+  <path d="M42 56 Q50 60 58 56" stroke="#6b7a4a" stroke-width="1.5" fill="none"/>
+  <!-- Wrinkles -->
+  <path d="M38 50 Q42 49 46 50" stroke="#6b7a4a" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <path d="M54 50 Q58 49 62 50" stroke="#6b7a4a" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <!-- Robe collar -->
+  <path d="M35 65 Q50 72 65 65 Q65 80 50 82 Q35 80 35 65Z" fill="#5c4a2a"/>
+</svg>

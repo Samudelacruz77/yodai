@@ -1,0 +1,6 @@
+listen_addr: ":8080"
+inference_url: "http://localhost:8000"
+inference_model: "tensorrt_llm"
+max_tokens: 512
+temperature: 0.7
+top_p: 0.9

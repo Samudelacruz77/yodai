@@ -1,0 +1,13 @@
+FROM dustynv/tensorrt_llm:0.12-r36.4.0
+
+COPY deploy/scripts/start-inference.sh /opt/start-inference.sh
+RUN chmod +x /opt/start-inference.sh
+
+ENV ENGINE_DIR=/data/models/engine
+ENV TOKENIZER_DIR=/data/models/tokenizer
+ENV HOST=0.0.0.0
+ENV PORT=8000
+
+EXPOSE 8000
+
+CMD ["/opt/start-inference.sh"]

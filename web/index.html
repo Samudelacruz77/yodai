@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YodAI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <img src="/static/img/yoda-avatar.svg" alt="Yoda" class="header-avatar">
+            <h1>YodAI</h1>
+            <span class="subtitle">Wisdom of a Jedi Master, seek you?</span>
+        </header>
+
+        <main class="chat-area" id="chatArea">
+            <div class="message yoda">
+                <img src="/static/img/yoda-avatar.svg" alt="Yoda" class="avatar">
+                <div class="bubble">Greetings, young one. Ask me anything, you may. Hmmm.</div>
+            </div>
+        </main>
+
+        <form class="input-area" id="chatForm">
+            <input type="text" id="messageInput" placeholder="Ask Yoda a question..." autocomplete="off" autofocus>
+            <button type="submit" id="sendBtn">Send</button>
+        </form>
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
