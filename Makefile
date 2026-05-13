@@ -34,6 +34,7 @@ engine:
 		--device nvidia.com/gpu=all \
 		--security-opt label=disable \
 		-v yodai_model-data:/data/models \
+		-v $(CURDIR)/deploy/scripts/build-engine.sh:/data/build-engine.sh:ro,Z \
 		-e HUGGINGFACE_TOKEN=$(HUGGINGFACE_TOKEN) \
 		dustynv/tensorrt_llm:0.12-r36.4.0 \
 		bash /data/build-engine.sh
