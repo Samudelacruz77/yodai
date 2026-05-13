@@ -13,8 +13,8 @@ Browser  <-->  Go HTTP Server (:8080)  <-->  TensorRT-LLM Server (:8000)
 ## Prerequisites
 
 - NVIDIA Jetson AGX Orin with JetPack 6.1+ (L4T r36.3+)
-- Docker with nvidia-container-runtime
-- Docker Compose v2
+- Podman 4.1+ (or Docker 25+ with `CONTAINER_RUNTIME=docker`)
+- NVIDIA Container Toolkit with CDI configured (`nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml`)
 - ~20 GB free disk space for model weights and engine
 - Hugging Face account with Llama 3.1 access
 
@@ -29,7 +29,7 @@ make engine HUGGINGFACE_TOKEN=hf_your_token_here
 ### 2. Build and start
 
 ```bash
-make docker-build
+make container-build
 make up
 ```
 

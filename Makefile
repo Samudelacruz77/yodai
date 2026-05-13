@@ -1,7 +1,8 @@
-.PHONY: build run test clean engine docker-build up down dev tidy
+.PHONY: build run test clean engine container-build up down dev tidy
 
 BINARY := bin/yodai
 GOARCH ?= arm64
+CONTAINER_RUNTIME ?= podman
 
 build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -o $(BINARY) ./cmd/yodai/
@@ -21,25 +22,27 @@ test:
 tidy:
 	go mod tidy
 
-docker-build:
-	docker compose -f deploy/docker-compose.yml build
+container-build:
+	$(CONTAINER_RUNTIME) compose -f deploy/docker-compose.yml build
 
 engine:
 	@if [ -z "$(HUGGINGFACE_TOKEN)" ]; then \
 		echo "Usage: make engine HUGGINGFACE_TOKEN=hf_xxx"; \
 		exit 1; \
 	fi
-	docker run --rm --runtime nvidia \
+	$(CONTAINER_RUNTIME) run --rm \
+		--device nvidia.com/gpu=all \
+		--security-opt label=disable \
 		-v yodai_model-data:/data/models \
 		-e HUGGINGFACE_TOKEN=$(HUGGINGFACE_TOKEN) \
 		dustynv/tensorrt_llm:0.12-r36.4.0 \
 		bash /data/build-engine.sh
 
 up:
-	docker compose -f deploy/docker-compose.yml up -d
+	$(CONTAINER_RUNTIME) compose -f deploy/docker-compose.yml up -d
 
 down:
-	docker compose -f deploy/docker-compose.yml down
+	$(CONTAINER_RUNTIME) compose -f deploy/docker-compose.yml down
 
 clean:
 	rm -rf bin/

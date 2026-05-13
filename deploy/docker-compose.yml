@@ -3,7 +3,10 @@ services:
     build:
       context: ..
       dockerfile: deploy/Containerfile.inference
-    runtime: nvidia
+    devices:
+      - nvidia.com/gpu=all
+    security_opt:
+      - label=disable
     volumes:
       - model-data:/data/models
     ports:
@@ -11,11 +14,6 @@ services:
     environment:
       - ENGINE_DIR=/data/models/engine
       - TOKENIZER_DIR=/data/models/tokenizer
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
 
   yodai:
     build:
