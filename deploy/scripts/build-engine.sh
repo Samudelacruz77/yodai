@@ -49,7 +49,8 @@ trtllm-build \
     --gemm_plugin float16 \
     --max_batch_size "${MAX_BATCH_SIZE}" \
     --max_input_len "${MAX_SEQ_LEN}" \
-    --max_seq_len "${MAX_SEQ_LEN}"
+    --max_seq_len "${MAX_SEQ_LEN}" \
+    --workers 1
 
 echo ""
 echo "=== Engine build complete ==="
