@@ -4,12 +4,8 @@ RUN dnf install -y nvidia-container-toolkit podman && \
     dnf clean all
 
 COPY deploy/bootc/yodai-compose.yaml /etc/yodai/compose.yaml
-COPY deploy/scripts/build-engine.sh /etc/yodai/build-engine.sh
 COPY deploy/bootc/yodai-cdi-generate.service /etc/systemd/system/yodai-cdi-generate.service
-COPY deploy/bootc/yodai-engine-build.service /etc/systemd/system/yodai-engine-build.service
 COPY deploy/bootc/yodai.service /etc/systemd/system/yodai.service
 
-RUN chmod +x /etc/yodai/build-engine.sh && \
-    systemctl enable yodai-cdi-generate.service && \
-    systemctl enable yodai-engine-build.service && \
+RUN systemctl enable yodai-cdi-generate.service && \
     systemctl enable yodai.service

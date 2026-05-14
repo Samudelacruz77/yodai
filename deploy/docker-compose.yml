@@ -1,19 +1,12 @@
 services:
   inference:
-    build:
-      context: ..
-      dockerfile: deploy/Containerfile.inference
+    image: quay.io/sdelacru/yodai-inference:latest
     devices:
       - nvidia.com/gpu=all
     security_opt:
       - label=disable
-    volumes:
-      - model-data:/data/models
     ports:
       - "8000:8000"
-    environment:
-      - ENGINE_DIR=/data/models/engine
-      - TOKENIZER_DIR=/data/models/tokenizer
 
   yodai:
     build:
@@ -26,7 +19,3 @@ services:
       - YODAI_LISTEN_ADDR=:8080
     depends_on:
       - inference
-
-volumes:
-  model-data:
-    driver: local

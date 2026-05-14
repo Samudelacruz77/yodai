@@ -1,8 +1,7 @@
 [Unit]
 Description=YodAI chatbot
-After=network-online.target yodai-cdi-generate.service yodai-engine-build.service
+After=network-online.target yodai-cdi-generate.service
 Requires=yodai-cdi-generate.service
-Wants=yodai-engine-build.service
 
 [Service]
 Type=simple

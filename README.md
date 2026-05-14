@@ -14,42 +14,40 @@ Browser  <-->  Go HTTP Server (:8080)  <-->  TensorRT-LLM Server (:8000)
 
 - NVIDIA Jetson AGX Orin with JetPack 6.1+ (L4T r36.3+)
 - Podman 4.1+ (or Docker 25+ with `CONTAINER_RUNTIME=docker`)
-- NVIDIA Container Toolkit with CDI configured
-- ~20 GB free disk space for model weights and engine
-- Hugging Face account with Llama 3.1 access
+- NVIDIA Container Toolkit with CDI configured (`nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml`)
 
 ## Quick Start
 
-### 1. Set up the Hugging Face token
+The inference image on quay.io includes a pre-compiled TensorRT-LLM engine — no on-device build needed.
 
-Store your token as a Podman secret (never baked into images):
-
-```bash
-echo "hf_your_token_here" | podman secret create huggingface_token -
-```
-
-### 2. Generate the CDI spec (one-time)
+### 1. Start the containers
 
 ```bash
-nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+make up
 ```
 
-### 3. Build the TensorRT-LLM engine (one-time, ~20 min)
+### 2. Open the chat
+
+Navigate to `http://<jetson-ip>:8080` in your browser.
+
+## Building the Engine (one-time, maintainer only)
+
+If you need to rebuild the TensorRT-LLM engine (e.g. for a different model or Jetson variant):
+
+### 1. Build the engine
 
 ```bash
 make engine HUGGINGFACE_TOKEN=hf_your_token_here
 ```
 
-### 4. Build and start
+### 2. Package and push the inference image
 
 ```bash
-make container-build
-make up
+make inference-image
+podman push quay.io/sdelacru/yodai-inference:latest
 ```
 
-### 5. Open the chat
-
-Navigate to `http://<jetson-ip>:8080` in your browser.
+This exports the engine from the build volume, bakes it into the inference container image, and pushes to quay.io. Other devices just pull the image.
 
 ## Bootc Deployment
 
@@ -69,19 +67,10 @@ bootc switch quay.io/sdelacru/yodai-bootc:latest
 systemctl reboot
 ```
 
-### First boot setup
-
-Create the Hugging Face Podman secret before the engine build runs:
-
-```bash
-echo "hf_your_token_here" | podman secret create huggingface_token -
-```
-
-The boot sequence handles the rest automatically:
+The boot sequence:
 
 1. **yodai-cdi-generate** — generates the NVIDIA CDI spec (skips if already done)
-2. **yodai-engine-build** — downloads model and builds the TensorRT engine using the Podman secret (skips if already built)
-3. **yodai** — pulls container images and starts the compose stack
+2. **yodai** — pulls container images and starts the compose stack
 
 ### Flightctl
 

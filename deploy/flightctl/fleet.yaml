@@ -15,8 +15,6 @@ spec:
         - name: yodai
           appType: compose
           envVars:
-            ENGINE_DIR: /data/models/engine
-            TOKENIZER_DIR: /data/models/tokenizer
             YODAI_INFERENCE_URL: http://inference:8000
             YODAI_LISTEN_ADDR: ":8080"
           inline:
@@ -29,13 +27,8 @@ spec:
                       - nvidia.com/gpu=all
                     security_opt:
                       - label=disable
-                    volumes:
-                      - model-data:/data/models
                     ports:
                       - "8000:8000"
-                    environment:
-                      - ENGINE_DIR=${ENGINE_DIR}
-                      - TOKENIZER_DIR=${TOKENIZER_DIR}
 
                   yodai:
                     image: quay.io/sdelacru/yodai:latest
@@ -46,7 +39,3 @@ spec:
                       - YODAI_LISTEN_ADDR=${YODAI_LISTEN_ADDR}
                     depends_on:
                       - inference
-
-                volumes:
-                  model-data:
-                    driver: local

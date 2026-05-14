@@ -1,8 +1,10 @@
-.PHONY: build run test clean engine container-build up down dev tidy
+.PHONY: build run test clean engine inference-image container-build up down dev tidy
 
 BINARY := bin/yodai
 GOARCH ?= arm64
 CONTAINER_RUNTIME ?= podman
+INFERENCE_IMAGE ?= quay.io/sdelacru/yodai-inference:latest
+ENGINE_EXPORT_DIR ?= /tmp/yodai-engine
 
 build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -o $(BINARY) ./cmd/yodai/
@@ -38,6 +40,21 @@ engine:
 		-e HUGGINGFACE_TOKEN=$(HUGGINGFACE_TOKEN) \
 		dustynv/tensorrt_llm:0.12-r36.4.0 \
 		bash /data/build-engine.sh
+
+inference-image:
+	@echo "=== Exporting engine from volume ==="
+	mkdir -p $(ENGINE_EXPORT_DIR)
+	$(CONTAINER_RUNTIME) run --rm \
+		-v yodai_model-data:/data/models:ro \
+		-v $(ENGINE_EXPORT_DIR):/export \
+		busybox sh -c "cp -r /data/models/engine /export/ && cp -r /data/models/tokenizer /export/"
+	@echo "=== Building inference image ==="
+	$(CONTAINER_RUNTIME) build \
+		-f deploy/Containerfile.inference \
+		-t $(INFERENCE_IMAGE) \
+		$(ENGINE_EXPORT_DIR)
+	rm -rf $(ENGINE_EXPORT_DIR)
+	@echo "=== Push with: $(CONTAINER_RUNTIME) push $(INFERENCE_IMAGE) ==="
 
 up:
 	$(CONTAINER_RUNTIME) compose -f deploy/docker-compose.yml up -d
