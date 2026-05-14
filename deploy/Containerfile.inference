@@ -1,5 +1,9 @@
 FROM dustynv/tensorrt_llm:0.12-r36.4.0
 
+# Patch pynvml bug in TensorRT-LLM 0.12 (NameError on Jetson iGPU)
+RUN sed -i 's/except pynvml\.NVMLError:/except Exception:/' \
+    /usr/local/lib/python3.10/dist-packages/tensorrt_llm/auto_parallel/cluster_info.py
+
 COPY start-inference.sh /opt/start-inference.sh
 RUN chmod +x /opt/start-inference.sh
 
