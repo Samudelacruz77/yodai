@@ -45,6 +45,7 @@ inference-image:
 	@echo "=== Exporting engine from volume ==="
 	mkdir -p $(ENGINE_EXPORT_DIR)
 	$(CONTAINER_RUNTIME) run --rm \
+		--security-opt label=disable \
 		-v yodai_model-data:/data/models:ro \
 		-v $(ENGINE_EXPORT_DIR):/export \
 		busybox sh -c "cp -r /data/models/engine /export/ && cp -r /data/models/tokenizer /export/"
