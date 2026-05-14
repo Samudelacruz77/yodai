@@ -1,8 +1,15 @@
 FROM quay.io/redhat-user-workloads/jetpack-for-rhel-tenant/rhel97-5140-611361-stage:36.4.4-5.14.0_611.36.1-031226091323
 
-RUN dnf install -y nvidia-container-toolkit podman python3-pip && \
+RUN dnf install -y 'dnf-command(copr)' && \
+    dnf copr enable -y @flightctl/flightctl && \
+    dnf install -y nvidia-container-toolkit podman python3-pip flightctl-agent && \
     pip3 install podman-compose && \
     dnf clean all
+
+# Generate with: flightctl certificate request --signer=enrollment --expiration=365d --output=embedded > deploy/bootc/agent-config.yaml
+COPY deploy/bootc/agent-config.yaml /etc/flightctl/agent.yaml
+
+RUN systemctl enable flightctl-agent.service
 
 COPY deploy/bootc/yodai-compose.yaml /etc/yodai/compose.yaml
 COPY deploy/bootc/yodai-cdi-generate.service /etc/systemd/system/yodai-cdi-generate.service
