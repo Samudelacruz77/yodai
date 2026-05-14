@@ -1,0 +1,16 @@
+[Unit]
+Description=YodAI chatbot
+After=network-online.target yodai-cdi-generate.service
+Requires=yodai-cdi-generate.service
+
+[Service]
+Type=simple
+WorkingDirectory=/etc/yodai
+ExecStartPre=/usr/bin/podman compose pull
+ExecStart=/usr/bin/podman compose up
+ExecStop=/usr/bin/podman compose down
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+FROM quay.io/redhat-user-workloads/jetpack-for-rhel-tenant/rhel97-5140-611361-stage:36.4.4-5.14.0_611.36.1-031226091323
+
+RUN dnf install -y nvidia-container-toolkit podman && \
+    dnf clean all
+
+COPY deploy/bootc/yodai-compose.yaml /etc/yodai/compose.yaml
+COPY deploy/bootc/yodai-cdi-generate.service /etc/systemd/system/yodai-cdi-generate.service
+COPY deploy/bootc/yodai.service /etc/systemd/system/yodai.service
+
+RUN systemctl enable yodai-cdi-generate.service && \
+    systemctl enable yodai.service
