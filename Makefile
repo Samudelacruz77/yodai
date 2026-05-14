@@ -49,6 +49,7 @@ inference-image:
 		-v yodai_model-data:/data/models:ro \
 		-v $(ENGINE_EXPORT_DIR):/export \
 		busybox sh -c "cp -r /data/models/engine /export/ && cp -r /data/models/tokenizer /export/"
+	cp $(CURDIR)/deploy/scripts/start-inference.sh $(ENGINE_EXPORT_DIR)/
 	@echo "=== Building inference image ==="
 	$(CONTAINER_RUNTIME) build \
 		-f deploy/Containerfile.inference \

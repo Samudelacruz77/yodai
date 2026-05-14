@@ -1,6 +1,6 @@
 FROM dustynv/tensorrt_llm:0.12-r36.4.0
 
-COPY deploy/scripts/start-inference.sh /opt/start-inference.sh
+COPY start-inference.sh /opt/start-inference.sh
 RUN chmod +x /opt/start-inference.sh
 
 COPY engine/ /data/models/engine/
