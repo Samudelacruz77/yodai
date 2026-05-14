@@ -11,6 +11,8 @@ spec:
       labels:
         fleet: yodai
     spec:
+      os:
+        image: quay.io/sdelacru/yodai-bootc:latest
       applications:
         - name: yodai
           appType: compose

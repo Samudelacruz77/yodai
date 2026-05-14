@@ -6,9 +6,9 @@ Requires=yodai-cdi-generate.service
 [Service]
 Type=simple
 WorkingDirectory=/etc/yodai
-ExecStartPre=/usr/bin/podman compose pull
-ExecStart=/usr/bin/podman compose up
-ExecStop=/usr/bin/podman compose down
+ExecStartPre=/usr/local/bin/podman-compose pull
+ExecStart=/usr/local/bin/podman-compose up
+ExecStop=/usr/local/bin/podman-compose down
 Restart=on-failure
 RestartSec=10
 

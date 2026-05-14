@@ -1,6 +1,7 @@
 FROM quay.io/redhat-user-workloads/jetpack-for-rhel-tenant/rhel97-5140-611361-stage:36.4.4-5.14.0_611.36.1-031226091323
 
-RUN dnf install -y nvidia-container-toolkit podman && \
+RUN dnf install -y nvidia-container-toolkit podman python3-pip && \
+    pip3 install podman-compose && \
     dnf clean all
 
 COPY deploy/bootc/yodai-compose.yaml /etc/yodai/compose.yaml
