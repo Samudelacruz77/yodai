@@ -43,6 +43,10 @@ python3 /opt/TensorRT-LLM/examples/quantization/quantize.py \
     --qformat "${QUANT_TYPE}" \
     --calib_size 32
 
+# Patch pynvml bug in TensorRT-LLM 0.12 (NameError on Jetson iGPU)
+sed -i 's/except pynvml\.NVMLError:/except Exception:/' \
+    /usr/local/lib/python3.10/dist-packages/tensorrt_llm/auto_parallel/cluster_info.py
+
 trtllm-build \
     --checkpoint_dir "${ENGINE_DIR}/quantized" \
     --output_dir "${ENGINE_DIR}" \
