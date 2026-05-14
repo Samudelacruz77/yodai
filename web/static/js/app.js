@@ -93,7 +93,7 @@ function appendMessage(role, content) {
 
     if (role === "yoda") {
         const avatar = document.createElement("img");
-        avatar.src = "/static/img/yoda-avatar.svg";
+        avatar.src = "/static/img/yoda-chibi.jpg";
         avatar.alt = "Yoda";
         avatar.className = "avatar";
         msg.appendChild(avatar);
